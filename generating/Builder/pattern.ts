@@ -39,18 +39,19 @@ abstract class Builder{
 
     public abstract reset(): void;
 
-    public abstract buildStepA(a: number): void;
+    public abstract buildStepA(a: number): Builder;
 
-    public abstract buildStepB(b: number): void;
+    public abstract buildStepB(b: number): Builder;
 
-    public abstract buildStepC(c: number): void;
+    public abstract buildStepC(c: number): Builder;
 }
 
-class BuilderA{
+class BuilderA extends Builder{
 
     private result: ProductA;
 
     constructor(){
+        super();
         this.result = new ProductA();
     }
 
@@ -58,16 +59,19 @@ class BuilderA{
         this.result = new ProductA();
     }
 
-    public buildStepA(a: number){
+    public buildStepA(a: number): Builder{
         this.result.a = a;
+        return this;
     }
 
-    public buildStepB(b: number){
+    public buildStepB(b: number): Builder{
         this.result.b = b;
+        return this;
     }
 
-    public buildStepC(c: number){
+    public buildStepC(c: number): Builder{
         this.result.c = c;
+        return this;
     }
 
     public getResult(): ProductA{
@@ -75,11 +79,12 @@ class BuilderA{
     }
 }
 
-class BuilderB{
+class BuilderB extends Builder{
 
     private result: ProductB;
 
     constructor(){
+        super();
         this.result = new ProductB();
     }
 
@@ -87,16 +92,19 @@ class BuilderB{
         this.result = new ProductB();
     }
 
-    public buildStepA(a: number){
+    public buildStepA(a: number): Builder{
         this.result.a = a;
+        return this;
     }
 
-    public buildStepB(b: number){
+    public buildStepB(b: number): Builder{
         this.result.b = b;
+        return this;
     }
 
-    public buildStepC(c: number){
+    public buildStepC(c: number): Builder{
         this.result.c = c;
+        return this;
     }
 
     public getResult(): ProductB{
@@ -108,20 +116,15 @@ class BuilderB{
 class Director{
     
     public createProductA(builder: Builder): void{
-        builder.buildStepA(6);
-        builder.buildStepB(4);
-        builder.buildStepC(5);
+        builder.buildStepA(6).buildStepB(4).buildStepC(5);
     }
 
     public createReverseProductA(builder: Builder): void{
-        builder.buildStepC(1);
-        builder.buildStepA(4);
-        builder.buildStepB(5);
+        builder.buildStepC(1).buildStepA(4).buildStepB(5);
     }
 
     public createProductB(builder: Builder): void{
-        builder.buildStepB(5);
-        builder.buildStepC(4);
+        builder.buildStepB(5).buildStepC(4);
     }
     
 }

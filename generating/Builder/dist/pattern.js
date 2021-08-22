@@ -26,8 +26,9 @@ class ProductB {
  */
 class Builder {
 }
-class BuilderA {
+class BuilderA extends Builder {
     constructor() {
+        super();
         this.result = new ProductA();
     }
     reset() {
@@ -35,19 +36,23 @@ class BuilderA {
     }
     buildStepA(a) {
         this.result.a = a;
+        return this;
     }
     buildStepB(b) {
         this.result.b = b;
+        return this;
     }
     buildStepC(c) {
         this.result.c = c;
+        return this;
     }
     getResult() {
         return this.result;
     }
 }
-class BuilderB {
+class BuilderB extends Builder {
     constructor() {
+        super();
         this.result = new ProductB();
     }
     reset() {
@@ -55,12 +60,15 @@ class BuilderB {
     }
     buildStepA(a) {
         this.result.a = a;
+        return this;
     }
     buildStepB(b) {
         this.result.b = b;
+        return this;
     }
     buildStepC(c) {
         this.result.c = c;
+        return this;
     }
     getResult() {
         return this.result;
@@ -68,18 +76,13 @@ class BuilderB {
 }
 class Director {
     createProductA(builder) {
-        builder.buildStepA(6);
-        builder.buildStepB(4);
-        builder.buildStepC(5);
+        builder.buildStepA(6).buildStepB(4).buildStepC(5);
     }
     createReverseProductA(builder) {
-        builder.buildStepC(1);
-        builder.buildStepA(4);
-        builder.buildStepB(5);
+        builder.buildStepC(1).buildStepA(4).buildStepB(5);
     }
     createProductB(builder) {
-        builder.buildStepB(5);
-        builder.buildStepC(4);
+        builder.buildStepB(5).buildStepC(4);
     }
 }
 const main = () => {
