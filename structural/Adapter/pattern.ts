@@ -34,6 +34,8 @@ class SeviceObject{
         this.data_ = Object.assign(obj);
     }
 
+    
+    //! reject this methods!!
     public get max(): number{
         return Object.values(this.data_).reduce((prev: number, current: number) => Math.max(prev, current));
     }
