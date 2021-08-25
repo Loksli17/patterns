@@ -99,8 +99,6 @@ const main: Function = () => {
         sum: adapter.sum,
         mul: adapter.multiple,
     });
-
-
 }
 
 main();
