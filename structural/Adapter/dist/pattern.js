@@ -16,23 +16,38 @@ class ServiceArray {
     get multiple() {
         return this.data_.reduce((prev, current) => prev * current);
     }
+    get data() {
+        return this.data_;
+    }
+    set data(arr) {
+        this.data_ = arr;
+    }
 }
 class SeviceObject {
     constructor(obj) {
         this.data_ = {};
         this.data_ = Object.assign(obj);
     }
-    get max() {
-        return Object.values(this.data_).reduce((prev, current) => Math.max(prev, current));
+    get data() {
+        return this.data_;
     }
-    get min() {
-        return Object.values(this.data_).reduce((prev, current) => Math.min(prev, current));
+}
+class Adapter extends ServiceArray {
+    constructor(serviceObj) {
+        super([]);
+        this.serviceObj_ = serviceObj;
     }
     get sum() {
-        return Object.values(this.data_).reduce((prev, current) => prev + current);
+        return this.data_.concat(Object.values(this.serviceObj_.data)).reduce((prev, current) => prev + current);
     }
     get multiple() {
-        return Object.values(this.data_).reduce((prev, current) => prev * current);
+        return this.data_.concat(Object.values(this.serviceObj_.data)).reduce((prev, current) => prev * current);
+    }
+    get min() {
+        return this.data_.concat(Object.values(this.serviceObj_.data)).reduce((prev, current) => Math.min(prev, current));
+    }
+    get max() {
+        return this.data_.concat(Object.values(this.serviceObj_.data)).reduce((prev, current) => Math.max(prev, current));
     }
 }
 const main = () => {
@@ -43,12 +58,13 @@ const main = () => {
         sum: serviceArray.sum,
         mul: serviceArray.multiple
     });
-    const serviceObj = new SeviceObject({ '0': 5, '1': 2, '2': 4, '3': 8 });
+    const serviceObj = new SeviceObject({ '0': 5, '1': 2, '2': 4, '3': 8 }), adapter = new Adapter(serviceObj);
+    adapter.data = [4, 6, 7, 10, 11];
     console.table({
-        max: serviceObj.max,
-        min: serviceObj.min,
-        sum: serviceObj.sum,
-        mul: serviceObj.multiple
+        max: adapter.max,
+        min: adapter.min,
+        sum: adapter.sum,
+        mul: adapter.multiple,
     });
 };
 main();

@@ -2,7 +2,7 @@
 
 class ServiceArray{
 
-    private data_: Array<number> = [];
+    protected data_: Array<number> = [];
 
     constructor(arr: Array<number>){
         this.data_ = arr;
@@ -23,6 +23,14 @@ class ServiceArray{
     public get multiple(): number{
         return this.data_.reduce((prev: number, current: number) => prev * current);
     }
+
+    public get data(): Array<number>{
+        return this.data_;
+    }
+
+    public set data(arr: Array<number>){
+        this.data_ = arr;
+    }
 }
 
 
@@ -34,22 +42,8 @@ class SeviceObject{
         this.data_ = Object.assign(obj);
     }
 
-    
-    //! reject this methods!!
-    public get max(): number{
-        return Object.values(this.data_).reduce((prev: number, current: number) => Math.max(prev, current));
-    }
-
-    public get min(): number{
-        return Object.values(this.data_).reduce((prev: number, current: number) => Math.min(prev, current));
-    }
-
-    public get sum(): number{
-        return Object.values(this.data_).reduce((prev: number, current: number) => prev + current);
-    }
-
-    public get multiple(): number{
-        return Object.values(this.data_).reduce((prev: number, current: number) => prev * current);
+    public get data(): {[index: string]: number}{
+        return this.data_;
     }
 }
 
@@ -63,7 +57,21 @@ class Adapter extends ServiceArray{
         this.serviceObj_ = serviceObj;
     }
 
-    public 
+    public get sum(): number{
+        return this.data_.concat(Object.values(this.serviceObj_.data)).reduce((prev: number, current: number) => prev + current) 
+    }
+
+    public get multiple(): number{
+        return this.data_.concat(Object.values(this.serviceObj_.data)).reduce((prev: number, current: number) => prev * current) 
+    }
+
+    public get min(): number{
+        return this.data_.concat(Object.values(this.serviceObj_.data)).reduce((prev: number, current: number) => Math.min(prev, current))
+    }
+
+    public get max(): number{
+        return this.data_.concat(Object.values(this.serviceObj_.data)).reduce((prev: number, current: number) => Math.max(prev, current))
+    }
 
 }
 
@@ -79,14 +87,19 @@ const main: Function = () => {
         mul: serviceArray.multiple
     });
 
-    const serviceObj: SeviceObject = new SeviceObject({'0': 5, '1': 2, '2': 4, '3': 8});
+    const 
+        serviceObj: SeviceObject = new SeviceObject({'0': 5, '1': 2, '2': 4, '3': 8}),
+        adapter   : Adapter      = new Adapter(serviceObj);
+
+    adapter.data = [4, 6, 7, 10, 11];
 
     console.table({
-        max: serviceObj.max,
-        min: serviceObj.min,
-        sum: serviceObj.sum,
-        mul: serviceObj.multiple
+        max: adapter.max,
+        min: adapter.min,
+        sum: adapter.sum,
+        mul: adapter.multiple,
     });
+
 
 }
 
