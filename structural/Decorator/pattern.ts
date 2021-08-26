@@ -67,16 +67,46 @@ main();
 
 
 //! It's decorator in TS
-
-
 const decorators = {
+    
+    UpperLetterMethod: () => {
+        return (target: Object, propertyKey: string, descriptor: PropertyDescriptor) => {
+
+            const method = descriptor.value;
+
+            descriptor.value = function(...args: any[]){
+                let value = method.apply(this, args);
+                return value.toUpperCase();
+            }
+
+            return descriptor;
+        }
+    },
+
     UpperLetter: () => {
-        return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
-            // ! do this
-            // console.log(target);
+        return function(target: Object, propertyKey: string, descriptor: PropertyDescriptor){
+        
+            const get = descriptor.get!;
+
+            descriptor.get = function(){
+                const val: string = get.call(this);
+                return val.toUpperCase();
+            }
+        }
+    },
+
+    WordReverse: () => {
+        return function(target: Object, propertyKey: string, descriptor: PropertyDescriptor){
+            const get = descriptor.get!;
+
+            descriptor.get = function(){
+                const val: string = get.call(this);
+                return val.split(' ').reverse().join(' ');
+            }
         }
     }
 }
+
 
 class ServiceTS implements ServiceInterface{
     private message_: string = "";
@@ -86,7 +116,17 @@ class ServiceTS implements ServiceInterface{
     }
 
     @decorators.UpperLetter()
+    @decorators.WordReverse()
     public get request(): string{
         return this.message_;
     }
+
+    @decorators.UpperLetterMethod()
+    public kek(): string{
+        return this.message_;
+    }
 }
+
+
+const test: ServiceTS = new ServiceTS('it really kek');
+console.log(test.request);
