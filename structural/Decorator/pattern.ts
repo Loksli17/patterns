@@ -67,3 +67,26 @@ main();
 
 
 //! It's decorator in TS
+
+
+const decorators = {
+    UpperLetter: () => {
+        return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+            // ! do this
+            // console.log(target);
+        }
+    }
+}
+
+class ServiceTS implements ServiceInterface{
+    private message_: string = "";
+
+    constructor(message: string){
+        this.message_ = message;
+    }
+
+    @decorators.UpperLetter()
+    public get request(): string{
+        return this.message_;
+    }
+}
