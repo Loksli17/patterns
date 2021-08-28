@@ -32,6 +32,10 @@ class ProxyService implements ServiceInterface{
 
     private service_:  ServiceInterface;
 
+    /**
+     * * We can create aggregate in constructor of ProxyService
+     * ? @param service 
+     */
     constructor(service: ServiceInterface){
         this.service_ = service;
     }
@@ -53,3 +57,11 @@ const main: Function = () => {
 }
 
 main();
+
+
+/* 
+    ? JS has his own Proxy class
+    ? Let's try to code this here
+*/
+
+//! CODE HERE
